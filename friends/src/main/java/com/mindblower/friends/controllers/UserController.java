@@ -3,6 +3,8 @@ package com.mindblower.friends.controllers;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,7 @@ public class UserController {
 	
 	
 	@PostMapping("/saveUser")
-	public ResponseEntity<Response> createUser(@RequestBody UserDto userDto){
+	public ResponseEntity<Response> createUser(@Valid @RequestBody UserDto userDto){
 		
 		UserDto creUserDto = userService.createUser(userDto);
 		
@@ -38,7 +40,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/updateUser")
-	public ResponseEntity<Response> updateUser(@RequestBody UserDto userDto){
+	public ResponseEntity<Response> updateUser(@Valid @RequestBody UserDto userDto){
 		
 		
 		Integer userId = userDto.getId();
