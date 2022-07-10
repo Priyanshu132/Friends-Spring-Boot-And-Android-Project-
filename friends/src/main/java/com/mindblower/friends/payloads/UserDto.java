@@ -2,35 +2,54 @@ package com.mindblower.friends.payloads;
 
 import java.sql.Date;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+
 public class UserDto {
 
 	private int id;
 	
+	@NotEmpty
+	@Max(value = 30,message = "First Name length should not be more than 30 characters !!")
 	private String first_name;
 	
 	private String middle_name;
 	
 	private String last_name;
 	
-	
+	@NotEmpty(message = "Provide the ")
 	private String gender;
 	
-	
+	@NotNull(message = "Date Of Birth must be provided !!")
 	private Date dob;
 	
 	//private Language language_known;
 	
-	
+	@Email(message = "Email address is not valid !!")
+	@Max(value = 100,message = "Email should not contains more than 100 characters !!")
 	private String email;
 	
-	
+	@NotNull
+	@Min(value = 8,message = "Password can't be less than 8 characters !!")
+	@Max(value = 15,message = "Password can't be more than 15 characters !!")
+	@Pattern(regexp = "(?=.*?[A-Z])",message = "Password should have at least one Upper Case Letter")
+	@Pattern(regexp = "(?=.*?[a-z])",message = "Password should have at least one Lower Case Letter")
+	@Pattern(regexp = "(?=.*?[0-9])",message = "Password should have at least one Digit")
+	@Pattern(regexp = "(?=.*?[#?!@$%^&*-])",message = "Password should have at least one Special Character")
 	private String password;
 	
-	
+	@Max(value = 100,message = "You can write only 100 characters only !!")
 	private String about;
 	
 	private String profile_image;
 	private String cover_image;
+	
+	
 	public int getId() {
 		return id;
 	}
