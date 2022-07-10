@@ -40,16 +40,10 @@ public class UserController {
 	@PutMapping("/updateUser")
 	public ResponseEntity<Response> updateUser(@RequestBody UserDto userDto){
 		
-		Response response;
-		try {
-			Integer userId = userDto.getId();
-			UserDto updatedUser = userService.updateUser(userDto,userId);
-			 response = new Response("User Updated Successfully", true,1,updatedUser);
-		}
-		catch (ResourceNotFoundException e) {
-			 response = new Response(e.getMessage(), false);
-			
-		}
+		
+		Integer userId = userDto.getId();
+		UserDto updatedUser = userService.updateUser(userDto,userId);
+		Response response = new Response("User Updated Successfully", true,1,updatedUser);
 		
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

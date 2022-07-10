@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto updateUser(UserDto userDto,Integer userId) {
 
-		User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User"," id ",userId));
+		User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","id",userId));
 		User user1 = mapper.map(userDto, User.class);
 		User savedUser = userRepo.save(user1);
 		
