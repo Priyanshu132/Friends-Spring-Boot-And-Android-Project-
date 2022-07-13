@@ -1,28 +1,30 @@
-package com.mindblower.friends.payloads;
+package com.mindblower.friends.Dto;
 
 import java.sql.Date;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 
 public class UserDto {
 
-	private int id;
+	private Integer id;
 	
 	@NotEmpty
-	@Max(value = 30,message = "First Name length should not be more than 30 characters !!")
+	@Size(max = 30,message = "First Name length should not be more than 30 characters !!")
 	private String first_name;
 	
 	private String middle_name;
 	
 	private String last_name;
 	
-	@NotEmpty(message = "Provide the ")
+	@NotEmpty(message = "Provide the gender")
 	private String gender;
 	
 	@NotNull(message = "Date Of Birth must be provided !!")
@@ -31,29 +33,26 @@ public class UserDto {
 	//private Language language_known;
 	
 	@Email(message = "Email address is not valid !!")
-	@Max(value = 100,message = "Email should not contains more than 100 characters !!")
 	private String email;
 	
-	@NotNull
-	@Min(value = 8,message = "Password can't be less than 8 characters !!")
-	@Max(value = 15,message = "Password can't be more than 15 characters !!")
-	@Pattern(regexp = "(?=.*?[A-Z])",message = "Password should have at least one Upper Case Letter")
-	@Pattern(regexp = "(?=.*?[a-z])",message = "Password should have at least one Lower Case Letter")
-	@Pattern(regexp = "(?=.*?[0-9])",message = "Password should have at least one Digit")
-	@Pattern(regexp = "(?=.*?[#?!@$%^&*-])",message = "Password should have at least one Special Character")
+	@NotBlank(message = "It can't be Empty")
+	@Size(min = 8,max = 15,message = "Password length should be in between 8-15 characters !!")
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$",
+	message = "Password should have at least one Upper Case Letter,one Lower Case Letter, one Digit and one special Character")
 	private String password;
 	
-	@Max(value = 100,message = "You can write only 100 characters only !!")
+	@Size(max = 100,message = "You can write only 100 characters only !!")
 	private String about;
 	
 	private String profile_image;
 	private String cover_image;
 	
 	
-	public int getId() {
+	
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getFirst_name() {

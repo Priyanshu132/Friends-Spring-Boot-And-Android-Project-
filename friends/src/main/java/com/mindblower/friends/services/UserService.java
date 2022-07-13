@@ -2,19 +2,19 @@ package com.mindblower.friends.services;
 
 import java.util.List;
 
-import com.mindblower.friends.payloads.UserDto;
+import com.mindblower.friends.entities.User;
 
 
 public interface UserService {
 
-	UserDto createUser(UserDto userDto);
+	User createUser(User user);
 	
-	UserDto updateUser(UserDto userDto,Integer userId);
+	User updateUser(User user,Integer userId);
 	
 	void deleteUser(Integer userId);
 	
-	UserDto getUserbyId(Integer userId);
+	User getUserbyId(Integer userId);
 	
-	List<UserDto> getAllUsers();
+	List<User> getAllUsers();
 	
 }

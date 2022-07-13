@@ -1,14 +1,17 @@
 package com.mindblower.friends.entities;
 
+
+
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "languages")
@@ -23,6 +26,9 @@ public class Language {
 	
 	@Column(nullable = false)
 	private String visibility;
+	
+	@ManyToMany(mappedBy = "language_known",fetch = FetchType.LAZY)
+	private List<User> users;
 
 	public int getId() {
 		return id;

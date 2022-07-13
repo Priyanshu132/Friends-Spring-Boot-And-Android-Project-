@@ -1,37 +1,27 @@
-package com.mindblower.friends.entities;
+package com.mindblower.friends.Dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "Address")
-public class Address {
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+public class AddressDto {
+
 	private Integer id;
 	
+	@NotNull(message = "User Id can't be null")
+	private Integer userId;
+	
 	private String city;
+	
 	private String state;
+	
 	private String country;
 	
 	private String type;
 	
-	@Column(nullable = false)
+	@NotBlank(message = "Provide that Who can see your Address ?")
 	private String visibility;
 
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getCity() {
 		return city;
@@ -72,8 +62,23 @@ public class Address {
 	public void setVisibility(String visibility) {
 		this.visibility = visibility;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
 	
-
-
-
+	
 }

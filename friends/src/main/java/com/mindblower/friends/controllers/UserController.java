@@ -2,9 +2,11 @@ package com.mindblower.friends.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mindblower.friends.Dto.UserDto;
+import com.mindblower.friends.entities.User;
 import com.mindblower.friends.exception.ResourceNotFoundException;
-import com.mindblower.friends.payloads.UserDto;
 import com.mindblower.friends.reponse.Response;
 import com.mindblower.friends.services.UserService;
 
@@ -26,16 +29,20 @@ import com.mindblower.friends.services.UserService;
 @RequestMapping("/api/users")
 public class UserController {
 
-	@Autowired(required=true)
+	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private ModelMapper mapper;
 	
 	@PostMapping("/saveUser")
 	public ResponseEntity<Response> createUser(@Valid @RequestBody UserDto userDto){
 		
-		UserDto creUserDto = userService.createUser(userDto);
+		User user = mapper.map(userDto, User.class);
+		User updateduser = userService.createUser(user);
+		UserDto userDto2 = mapper.map(updateduser, UserDto.class);
+		Response response = new Response("User created Successfully", true,1,userDto2);
 		
-		Response response = new Response("User created Successfully", true,1,creUserDto);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
@@ -44,8 +51,10 @@ public class UserController {
 		
 		
 		Integer userId = userDto.getId();
-		UserDto updatedUser = userService.updateUser(userDto,userId);
-		Response response = new Response("User Updated Successfully", true,1,updatedUser);
+		User user = mapper.map(userDto, User.class);
+		User updatedUser = userService.updateUser(user,userId);
+		UserDto savedUserDto = mapper.map(updatedUser, UserDto.class);
+		Response response = new Response("User Updated Successfully", true,1,savedUserDto);
 		
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -53,7 +62,7 @@ public class UserController {
 	@GetMapping("/{userId}")
 	public ResponseEntity<Response> getUserById(@PathVariable Integer userId){
 		
-		UserDto updatedUser = userService.getUserbyId(userId);
+		User updatedUser = userService.getUserbyId(userId);
 		Response response = new Response("User Fetched Successfully", true,1,updatedUser);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -61,8 +70,9 @@ public class UserController {
 	@GetMapping("/")
 	public ResponseEntity<Response> getAllUsers(){
 		
-		List<UserDto> users = userService.getAllUsers();
-		Response response = new Response("User Fetched Successfully", true,users.size(),users);
+		List<User> users = userService.getAllUsers();
+		List<UserDto> userDtos= users.stream().map(user -> mapper.map(user, UserDto.class)).collect(Collectors.toList());
+		Response response = new Response("User Fetched Successfully", true,users.size(),userDtos);
 		
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

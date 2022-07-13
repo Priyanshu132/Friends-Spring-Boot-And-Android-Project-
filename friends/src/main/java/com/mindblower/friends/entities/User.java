@@ -1,7 +1,9 @@
 package com.mindblower.friends.entities;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -22,7 +25,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 	
 	@Column(nullable = false,length = 30)
 	private String first_name;
@@ -37,9 +40,11 @@ public class User {
 	@Column(name = "date_of_birth",nullable = false)
 	private Date dob;
 	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "language_known")
-//	private Language language_known;
+	@ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_language",
+    joinColumns = {@JoinColumn(name ="user",referencedColumnName = "id")},
+    inverseJoinColumns = {@JoinColumn(name ="language",referencedColumnName = "id")})
+	private List<Language> language_known;
 	
 	@Column(nullable = false,length = 100)
 	private String email;
@@ -52,13 +57,31 @@ public class User {
 	
 	private String profile_image;
 	private String cover_image;
-//	private Address address;
-//	private Contact contact;
-//	private Work work_place;
-//	private Education education;
-//	private String religion;
-//	private String interested;
-//	private int followedby;
+	
+	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinTable(name = "user_address",
+    joinColumns = {@JoinColumn(name ="user",referencedColumnName = "id")},
+    inverseJoinColumns = {@JoinColumn(name ="address",referencedColumnName = "id")})
+	private List<Address> address;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<Contact> contact;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "user_work_place",
+    joinColumns = {@JoinColumn(name ="user",referencedColumnName = "id")},
+    inverseJoinColumns = {@JoinColumn(name ="work_place",referencedColumnName = "id")})
+	private List<Work> work_place;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<Education> education;
+	
+	private String religion;
+	
+	private String interested;
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
+	private List<Post> post;
 	
 	
 	
@@ -66,12 +89,17 @@ public class User {
 		super();
 	}
 	
-	public int getId() {
+
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
+
+
 	public String getFirst_name() {
 		return first_name;
 	}
@@ -102,12 +130,23 @@ public class User {
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
-//	public Language getLanguage_known() {
-//		return language_known;
-//	}
-//	public void setLanguage_known(Language language_known) {
-//		this.language_known = language_known;
-//	}
+
+	public List<Language> getLanguage_known() {
+		return language_known;
+	}
+
+	public void setLanguage_known(List<Language> language_known) {
+		this.language_known = language_known;
+	}
+
+	public List<Post> getPost() {
+		return post;
+	}
+
+	public void setPost(List<Post> post) {
+		this.post = post;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -138,49 +177,54 @@ public class User {
 	public void setCover_image(String cover_image) {
 		this.cover_image = cover_image;
 	}
-//	public Address getAddress() {
-//		return address;
-//	}
-//	public void setAddress(Address address) {
-//		this.address = address;
-//	}
-//	public Contact getContact() {
-//		return contact;
-//	}
-//	public void setContact(Contact contact) {
-//		this.contact = contact;
-//	}
-//	public Work getWork_place() {
-//		return work_place;
-//	}
-//	public void setWork_place(Work work_place) {
-//		this.work_place = work_place;
-//	}
-//	public Education getEducation() {
-//		return education;
-//	}
-//	public void setEducation(Education education) {
-//		this.education = education;
-//	}
-//	public String getReligion() {
-//		return religion;
-//	}
-//	public void setReligion(String religion) {
-//		this.religion = religion;
-//	}
-//	public String getInterested() {
-//		return interested;
-//	}
-//	public void setInterested(String interested) {
-//		this.interested = interested;
-//	}
-//	public int getFollowedby() {
-//		return followedby;
-//	}
-//	public void setFollowedby(int followedby) {
-//		this.followedby = followedby;
-//	}
+	
+
+	public List<Address> getAddress() {
+		return address;
+	}
+
+	public void setAddress(List<Address> address) {
+		this.address = address;
+	}
+
+	public List<Work> getWork_place() {
+		return work_place;
+	}
+
+	public void setWork_place(List<Work> work_place) {
+		this.work_place = work_place;
+	}
+
+	public List<Contact> getContact() {
+		return contact;
+	}
+
+	public void setContact(List<Contact> contact) {
+		this.contact = contact;
+	}
+
 	
 	
+	public List<Education> getEducation() {
+		return education;
+	}
+
+	public void setEducation(List<Education> education) {
+		this.education = education;
+	}
+
+	public String getReligion() {
+		return religion;
+	}
+	public void setReligion(String religion) {
+		this.religion = religion;
+	}
+	public String getInterested() {
+		return interested;
+	}
+	public void setInterested(String interested) {
+		this.interested = interested;
+	}
+		
 	
 }
