@@ -49,7 +49,7 @@ public class CommentController {
 	}
 	
 	@DeleteMapping("delete/{Id}")
-	public ResponseEntity<Response> updateComment(@PathVariable Integer Id) {
+	public ResponseEntity<Response> deleteComment(@PathVariable Integer Id) {
 		
 		try {
 			commentService.deleteComment(Id);

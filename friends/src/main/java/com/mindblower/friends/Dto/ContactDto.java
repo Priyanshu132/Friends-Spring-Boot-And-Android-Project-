@@ -1,33 +1,23 @@
-package com.mindblower.friends.entities;
+package com.mindblower.friends.Dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
+public class ContactDto {
 
-@Entity
-@Table(name = "contacts")
-public class Contact {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@Column(name = "value")
+	@NotNull(message = "User Id can't be Null !!")
+	private Integer userIdInteger;
+	
+	@NotNull(message = "Value Can't be Null !! ")
 	private String contactValue;
 	
-	@Column(nullable = false)
+	@NotBlank(message = "Provide that which type of contact is this ? ")
 	private String type;
 	
-	@Column(nullable = false)
+	@NotBlank(message = "Provide that Who can see your Contact ?")
 	private String visibility;
-	
-	
 
 	public Integer getId() {
 		return id;
@@ -35,6 +25,14 @@ public class Contact {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getUserIdInteger() {
+		return userIdInteger;
+	}
+
+	public void setUserIdInteger(Integer userIdInteger) {
+		this.userIdInteger = userIdInteger;
 	}
 
 	public String getContactValue() {
@@ -60,6 +58,7 @@ public class Contact {
 	public void setVisibility(String visibility) {
 		this.visibility = visibility;
 	}
+	
 	
 	
 }
