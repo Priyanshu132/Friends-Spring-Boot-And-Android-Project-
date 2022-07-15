@@ -38,5 +38,14 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<Map<String,String>>(errorRes,HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(UserTokenNotFoundException.class)
+	public ResponseEntity<Response> UserTokenNotFoundExceptionHandler(UserTokenNotFoundException exception) {
+		
+		String message = exception.getMessage();
+		
+		Response response= new Response(message, false);
+		return new ResponseEntity<Response>(response,HttpStatus.NOT_FOUND);
+	}
+	
 	
 }

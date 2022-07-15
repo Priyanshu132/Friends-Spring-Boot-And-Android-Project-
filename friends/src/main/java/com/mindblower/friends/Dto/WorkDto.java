@@ -8,9 +8,6 @@ public class WorkDto {
 
 	private Integer id;
 	
-	@NotNull(message = "User Id can't be Null !!")
-	private Integer userIdInteger;
-	
 	@NotBlank(message = "Name Can't be Null/Blank !! ")
 	private String name;
 	
@@ -30,12 +27,7 @@ public class WorkDto {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getUserIdInteger() {
-		return userIdInteger;
-	}
-	public void setUserIdInteger(Integer userIdInteger) {
-		this.userIdInteger = userIdInteger;
-	}
+
 	public String getName() {
 		return name;
 	}

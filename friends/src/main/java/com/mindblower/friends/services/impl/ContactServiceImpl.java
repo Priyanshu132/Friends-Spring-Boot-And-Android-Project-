@@ -1,6 +1,7 @@
 package com.mindblower.friends.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mindblower.friends.Repositories.ContactRepo;
 import com.mindblower.friends.Repositories.UserRepo;
@@ -10,6 +11,7 @@ import com.mindblower.friends.exception.ResourceNotFoundException;
 import com.mindblower.friends.services.ContactService;
 import com.mindblower.friends.services.UserService;
 
+@Service
 public class ContactServiceImpl implements ContactService {
 
 	@Autowired
@@ -19,13 +21,12 @@ public class ContactServiceImpl implements ContactService {
 	private UserService userService;
 	
 	@Override
-	public Contact createContact(Contact contact, Integer userIdInteger) {
+	public Contact createContact(Contact contact, User user) {
 		
-		User user = userService.getUserbyId(userIdInteger);
 		Contact updatedContact = contactRepo.save(contact);
 		
 		user.getContact().add(updatedContact);
-		userService.updateUser(user, userIdInteger);
+		userService.updateUser(user, user.getId());
 		
 		return updatedContact;
 	}

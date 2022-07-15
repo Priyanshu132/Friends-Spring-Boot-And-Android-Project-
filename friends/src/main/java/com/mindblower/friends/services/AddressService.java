@@ -5,6 +5,7 @@ import java.util.List;
 import com.mindblower.friends.Dto.AddressDto;
 import com.mindblower.friends.Dto.UserDto;
 import com.mindblower.friends.entities.Address;
+import com.mindblower.friends.entities.User;
 
 public interface AddressService {
 
@@ -13,7 +14,7 @@ public interface AddressService {
 	
 	void deleteAddress(Integer addressId);
 	
-	Address addAddress(Address address,Integer userIdInteger);
+	Address addAddress(Address address,User user);
 	
 	
 }

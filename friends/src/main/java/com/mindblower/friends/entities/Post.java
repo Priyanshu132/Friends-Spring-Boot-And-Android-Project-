@@ -18,7 +18,7 @@ public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int postId;
+	private Integer postId;
 	
 	@Column(name = "about",length = 100)
 	private String PostAbout;
@@ -38,11 +38,13 @@ public class Post {
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Comment> comment;
 
-	public int getPostId() {
+	
+
+	public Integer getPostId() {
 		return postId;
 	}
 
-	public void setPostId(int postId) {
+	public void setPostId(Integer postId) {
 		this.postId = postId;
 	}
 

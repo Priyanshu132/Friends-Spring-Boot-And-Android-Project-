@@ -18,9 +18,6 @@ public class PostDto {
 
 	private Integer postId;
 	
-	@NotNull(message = "User Id can't be Null")
-	private Integer userId;
-	
 	@Size(max = 100,message = "Characters can't be more than 100 !!")
 	private String PostAbout;
 	
@@ -43,17 +40,6 @@ public class PostDto {
 	public void setPostId(Integer postId) {
 		this.postId = postId;
 	}
-
-
-	public Integer getUserId() {
-		return userId;
-	}
-
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
 
 	public String getPostAbout() {
 		return PostAbout;

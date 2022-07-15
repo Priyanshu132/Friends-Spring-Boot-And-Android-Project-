@@ -13,7 +13,7 @@ public class Education {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 	
 	@Column(nullable = false,length = 100)
 	private String name;
@@ -29,10 +29,11 @@ public class Education {
 	private String till_year;
 	
 	
-	public int getId() {
+	
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {

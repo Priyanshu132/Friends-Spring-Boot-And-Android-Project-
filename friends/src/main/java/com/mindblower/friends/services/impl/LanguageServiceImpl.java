@@ -1,6 +1,7 @@
 package com.mindblower.friends.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mindblower.friends.Repositories.LanguageRepo;
 import com.mindblower.friends.entities.Education;
@@ -10,6 +11,7 @@ import com.mindblower.friends.exception.ResourceNotFoundException;
 import com.mindblower.friends.services.LanguageService;
 import com.mindblower.friends.services.UserService;
 
+@Service
 public class LanguageServiceImpl implements LanguageService {
 	
 	@Autowired
@@ -19,13 +21,12 @@ public class LanguageServiceImpl implements LanguageService {
 	private LanguageRepo languageRepo;
 
 	@Override
-	public Language createLanguage(Language language, Integer userIdInteger) {
+	public Language createLanguage(Language language, User user) {
 		
-		User user = userService.getUserbyId(userIdInteger);
 		Language updatedLanguage = languageRepo.save(language);
 		
 		user.getLanguage_known().add(updatedLanguage);
-		userService.updateUser(user, userIdInteger);
+		userService.updateUser(user, user.getId());
 		
 		return updatedLanguage;
 	}

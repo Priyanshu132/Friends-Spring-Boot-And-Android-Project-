@@ -5,10 +5,8 @@ import javax.validation.constraints.NotNull;
 
 public class EducationDto {
 
-	private int id;
-	
-	@NotNull(message = "User Id can't be Null !!")
-	private Integer userIdInteger;
+	private Integer id;
+
 	
 	@NotBlank(message = "Name Can't be Null/Blank !! ")
 	private String name;
@@ -22,17 +20,13 @@ public class EducationDto {
 	private String till_month;
 	private String from_year;
 	private String till_year;
-	public int getId() {
+	
+	
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
-	}
-	public Integer getUserIdInteger() {
-		return userIdInteger;
-	}
-	public void setUserIdInteger(Integer userIdInteger) {
-		this.userIdInteger = userIdInteger;
 	}
 	public String getName() {
 		return name;

@@ -41,12 +41,11 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public Address addAddress(Address address,Integer userIdInteger) {
+	public Address addAddress(Address address,User user) {
 		
-		User user = userService.getUserbyId(userIdInteger);
 		Address updatedAddress =  addressRepo.save(address);
 		user.getAddress().add(updatedAddress);
-		userService.updateUser(user, userIdInteger);
+		userService.updateUser(user, user.getId());
 		
 		return updatedAddress;
 	}

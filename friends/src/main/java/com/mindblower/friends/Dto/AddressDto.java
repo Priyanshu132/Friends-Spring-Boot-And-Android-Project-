@@ -8,9 +8,6 @@ public class AddressDto {
 
 	private Integer id;
 	
-	@NotNull(message = "User Id can't be null")
-	private Integer userId;
-	
 	private String city;
 	
 	private String state;
@@ -69,14 +66,6 @@ public class AddressDto {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
 	}
 
 	

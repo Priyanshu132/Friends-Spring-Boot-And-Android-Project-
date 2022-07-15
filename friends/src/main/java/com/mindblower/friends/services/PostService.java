@@ -3,10 +3,11 @@ package com.mindblower.friends.services;
 import java.util.List;
 
 import com.mindblower.friends.entities.Post;
+import com.mindblower.friends.entities.User;
 
 public interface PostService {
 
-	Post createPost(Post post,Integer userId);
+	Post createPost(Post post,User user);
 	
 	Post updatePost(Post post,Integer postId);
 	

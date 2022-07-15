@@ -8,6 +8,7 @@ public class Response {
 	private boolean success;
 	private int count;
 	private Object object;
+	private String authorization;
 	
 
 
@@ -63,6 +64,16 @@ public class Response {
 
 	public void setSuccess(boolean success) {
 		this.success = success;
+	}
+
+
+	public String getAuthorization() {
+		return authorization;
+	}
+
+
+	public void setAuthorization(String authorization) {
+		this.authorization = authorization;
 	}
 	
 	

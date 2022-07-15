@@ -23,12 +23,11 @@ public class PostServiceImpl implements PostService {
 	UserService userService;
 	
 	@Override
-	public Post createPost(Post post,Integer userId) {
+	public Post createPost(Post post,User user) {
 		
-		User user = userService.getUserbyId(userId);
 		Post updatedPost = postRepo.save(post);
 		user.getPost().add(updatedPost);
-		userService.updateUser(user, userId);
+		userService.updateUser(user, user.getId());
 		return updatedPost;
 	}
 

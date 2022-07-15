@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User updateUser(User user,Integer userId) {
 
-		userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","id",userId));
 		User savedUser = userRepo.save(user);
 		
 		return savedUser;

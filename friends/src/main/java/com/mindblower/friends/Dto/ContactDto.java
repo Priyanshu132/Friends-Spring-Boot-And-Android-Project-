@@ -7,9 +7,6 @@ public class ContactDto {
 
 	private Integer id;
 	
-	@NotNull(message = "User Id can't be Null !!")
-	private Integer userIdInteger;
-	
 	@NotNull(message = "Value Can't be Null !! ")
 	private String contactValue;
 	
@@ -27,13 +24,7 @@ public class ContactDto {
 		this.id = id;
 	}
 
-	public Integer getUserIdInteger() {
-		return userIdInteger;
-	}
 
-	public void setUserIdInteger(Integer userIdInteger) {
-		this.userIdInteger = userIdInteger;
-	}
 
 	public String getContactValue() {
 		return contactValue;

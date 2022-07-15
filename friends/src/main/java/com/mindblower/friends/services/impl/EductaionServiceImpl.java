@@ -1,6 +1,7 @@
 package com.mindblower.friends.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mindblower.friends.Repositories.EducationRepo;
 import com.mindblower.friends.entities.Education;
@@ -9,6 +10,7 @@ import com.mindblower.friends.exception.ResourceNotFoundException;
 import com.mindblower.friends.services.EducationService;
 import com.mindblower.friends.services.UserService;
 
+@Service
 public class EductaionServiceImpl implements EducationService {
 	
 	@Autowired
@@ -18,14 +20,13 @@ public class EductaionServiceImpl implements EducationService {
 	private EducationRepo educationRepo;
 
 	@Override
-	public Education createEducation(Education education, Integer userIdInteger) {
+	public Education createEducation(Education education, User user) {
 		
-
-		User user = userService.getUserbyId(userIdInteger);
+		
 		Education updatedEducation = educationRepo.save(education);
 		
 		user.getEducation().add(updatedEducation);
-		userService.updateUser(user, userIdInteger);
+		userService.updateUser(user, user.getId());
 		
 		return updatedEducation;
 	}

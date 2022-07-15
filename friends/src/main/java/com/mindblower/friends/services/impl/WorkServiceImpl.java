@@ -1,6 +1,7 @@
 package com.mindblower.friends.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mindblower.friends.Repositories.WorkRepo;
 import com.mindblower.friends.entities.Language;
@@ -10,6 +11,7 @@ import com.mindblower.friends.exception.ResourceNotFoundException;
 import com.mindblower.friends.services.UserService;
 import com.mindblower.friends.services.WorkService;
 
+@Service
 public class WorkServiceImpl implements WorkService{
 	
 	@Autowired
@@ -20,13 +22,12 @@ public class WorkServiceImpl implements WorkService{
 	
 
 	@Override
-	public Work createWork(Work work, Integer userIdInteger) {
+	public Work createWork(Work work, User user) {
 		
-		User user = userService.getUserbyId(userIdInteger);
 		Work updatedWork = workRepo.save(work);
 		
 		user.getWork_place().add(updatedWork);
-		userService.updateUser(user, userIdInteger);
+		userService.updateUser(user, user.getId());
 		
 		return updatedWork;
 	}

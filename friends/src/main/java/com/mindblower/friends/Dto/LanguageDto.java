@@ -6,10 +6,8 @@ import javax.validation.constraints.NotNull;
 
 public class LanguageDto {
 
-	private int id;
-	
-	@NotNull(message = "User Id can't be Null !!")
-	private Integer userIdInteger;
+	private Integer id;
+
 	
 	@NotBlank(message = "Name Can't be Null/Blank !! ")
 	private String name;
@@ -17,20 +15,15 @@ public class LanguageDto {
 	@NotBlank(message = "Provide that Who can see your Education ?")
 	private String visibility;
 
-	public int getId() {
+	
+
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getUserIdInteger() {
-		return userIdInteger;
-	}
-
-	public void setUserIdInteger(Integer userIdInteger) {
-		this.userIdInteger = userIdInteger;
 	}
 
 	public String getName() {

@@ -17,7 +17,7 @@ public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int commentId;
+	private Integer commentId;
 	
 	@Column(name = "discription",length = 100)
 	private String CommentDiscription;
@@ -28,12 +28,13 @@ public class Comment {
 	@Column(name = "likes")
 	private int CommentLikes;
 
-	public int getPostId() {
+	
+	public Integer getCommentId() {
 		return commentId;
 	}
 
-	public void setPostId(int postId) {
-		this.commentId = postId;
+	public void setCommentId(Integer commentId) {
+		this.commentId = commentId;
 	}
 
 	public String getCommentDiscription() {
