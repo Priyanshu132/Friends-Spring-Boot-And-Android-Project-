@@ -8,4 +8,6 @@ public interface AuthTokenService {
 	User getCustomerFromToken(String authString);
 	
 	void saveAuthToken(AuthToken authToken);
+	
+	void deleteUserAuthRow(User user);
 }

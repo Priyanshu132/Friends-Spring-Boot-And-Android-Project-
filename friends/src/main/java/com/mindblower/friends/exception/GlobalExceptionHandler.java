@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -47,5 +49,22 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<Response>(response,HttpStatus.NOT_FOUND);
 	}
 	
+	@ExceptionHandler(MissingRequestHeaderException.class)
+	public ResponseEntity<Response> MissingRequestHeaderExceptionHandler(MissingRequestHeaderException exception) {
+		
+		String message = exception.getMessage();
+		
+		Response response= new Response(message, false);
+		return new ResponseEntity<Response>(response,HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public ResponseEntity<Response> MissingServletRequestParameterExceptionHandler(MissingServletRequestParameterException exception) {
+		
+		String message = exception.getMessage();
+		
+		Response response= new Response(message, false);
+		return new ResponseEntity<Response>(response,HttpStatus.NOT_FOUND);
+	}
 	
 }

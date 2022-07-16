@@ -83,8 +83,23 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
 	private List<Post> post;
 	
+	private boolean isOnline;
 	
+	@Column(name = "No_Of_Followers")
+	private int noOfFollewers;
 	
+	@Column(name = "No_Of_Friends")
+	private int noOfFriends;
+	
+	@Column(name = "No_Of_Following")
+	private int noOfFollowing;
+	
+	@Column(name = "No_Of_Get_Request")
+	private int noOfGetRequest;
+	
+	@Column(name = "No_Of_Send_Request")
+	private int noOfSendRequest;
+
 	public User() {
 		super();
 	}
@@ -225,6 +240,68 @@ public class User {
 	public void setInterested(String interested) {
 		this.interested = interested;
 	}
-		
+
+
+	public boolean isOnline() {
+		return isOnline;
+	}
+
+
+	public void setOnline(boolean isOnline) {
+		this.isOnline = isOnline;
+	}
+
+
+	public int getNoOfFollewers() {
+		return noOfFollewers;
+	}
+
+
+	public void setNoOfFollewers(int noOfFollewers) {
+		this.noOfFollewers = noOfFollewers;
+	}
+
+
+	public int getNoOfFriends() {
+		return noOfFriends;
+	}
+
+
+	public void setNoOfFriends(int noOfFriends) {
+		this.noOfFriends = noOfFriends;
+	}
+
+
+	public int getNoOfFollowing() {
+		return noOfFollowing;
+	}
+
+
+	public void setNoOfFollowing(int noOfFollowing) {
+		this.noOfFollowing = noOfFollowing;
+	}
+
+
+	public int getNoOfGetRequest() {
+		return noOfGetRequest;
+	}
+
+
+	public void setNoOfGetRequest(int noOfGetRequest) {
+		this.noOfGetRequest = noOfGetRequest;
+	}
+
+
+	public int getNoOfSendRequest() {
+		return noOfSendRequest;
+	}
+
+
+	public void setNoOfSendRequest(int noOfSendRequest) {
+		this.noOfSendRequest = noOfSendRequest;
+	}
+
+
+	
 	
 }

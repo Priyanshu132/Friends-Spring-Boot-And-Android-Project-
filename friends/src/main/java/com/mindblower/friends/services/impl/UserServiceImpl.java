@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.mindblower.friends.Repositories.UserRepo;
 import com.mindblower.friends.entities.User;
 import com.mindblower.friends.exception.ResourceNotFoundException;
+import com.mindblower.friends.services.AuthTokenService;
 import com.mindblower.friends.services.UserService;
 
 @Service
@@ -17,7 +18,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepo userRepo;
 	
-	
+	@Autowired
+	private AuthTokenService authTokenService;
 	
 	@Override
 	public User createUser(User user) {
@@ -62,6 +64,13 @@ public class UserServiceImpl implements UserService {
 		List<User> users  = userRepo.findAll();
 	
 		return users;
+	}
+
+	@Override
+	public void logoutUser(User user) {
+		
+		authTokenService.deleteUserAuthRow(user);
+		
 	}
 
 }

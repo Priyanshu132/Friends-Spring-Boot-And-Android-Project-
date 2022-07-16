@@ -1,11 +1,14 @@
 package com.mindblower.friends.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +20,7 @@ import com.mindblower.friends.reponse.Response;
 import com.mindblower.friends.security.Auth;
 import com.mindblower.friends.services.AuthTokenService;
 import com.mindblower.friends.services.PostService;
+import com.mindblower.friends.services.UserService;
 import com.mindblower.friends.Dto.PostDto;
 import com.mindblower.friends.entities.Post;
 import com.mindblower.friends.entities.User;
@@ -32,7 +36,23 @@ public class PostController {
 	private PostService postService;
 	
 	@Autowired
+	private UserService userService;
+	
+	@Autowired
 	private AuthTokenService authTokenService;
+	
+	@GetMapping("/")
+	public ResponseEntity<Response> getAllPost(@RequestHeader(required = true) String Authorization){
+		
+		User user = authTokenService.getCustomerFromToken(Authorization);
+		user.setOnline(true);
+		userService.updateUser(user, user.getId());
+		
+		List<Post> posts = postService.getAllPost();
+		
+		Response response = new Response("Post Created Successfully", true,1,posts);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
 
 	@PostMapping("save")
 	public ResponseEntity<Response> createPost(@RequestHeader(required = true) String Authorization,

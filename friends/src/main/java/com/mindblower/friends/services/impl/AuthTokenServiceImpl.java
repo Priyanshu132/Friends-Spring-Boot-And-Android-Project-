@@ -41,4 +41,11 @@ public class AuthTokenServiceImpl implements AuthTokenService {
 
 	}
 
+	@Override
+	public void deleteUserAuthRow(User user) {
+		
+		authTokenRepo.deleteByUser(user);
+		
+	}
+
 }

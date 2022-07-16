@@ -52,7 +52,7 @@ public class UserController {
 		User user = mapper.map(userDto, User.class);
 		
 		user.setPassword(Auth.generatePassword(user.getPassword()));
-		
+		user.setOnline(true);
 		User updateduser = userService.createUser(user);
 		
 		String authString = Auth.getAuthenticationToken(updateduser.getFirst_name());
@@ -132,4 +132,16 @@ public class UserController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
+	@PostMapping("/logout")
+	public ResponseEntity<Response> logoutUser(@RequestHeader(required = true) String Authorization){
+		
+		
+		User user = authTokenService.getCustomerFromToken(Authorization);
+		user.setOnline(false);
+		userService.updateUser(user, user.getId());
+		
+		userService.logoutUser(user);
+		
+		return new ResponseEntity<Response>(new Response("User Logout successfully", true), HttpStatus.OK);
+	}
 }
