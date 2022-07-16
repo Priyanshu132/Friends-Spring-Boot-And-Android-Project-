@@ -46,7 +46,7 @@ public class User {
     inverseJoinColumns = {@JoinColumn(name ="language",referencedColumnName = "id")})
 	private List<Language> language_known;
 	
-	@Column(nullable = false,length = 100)
+	@Column(nullable = false,length = 100,unique = true)
 	private String email;
 	
 	@Column(nullable = false,length = 100)
