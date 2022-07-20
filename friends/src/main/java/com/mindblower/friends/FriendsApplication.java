@@ -1,4 +1,4 @@
-package com.mindblower.friends;
+	package com.mindblower.friends;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;

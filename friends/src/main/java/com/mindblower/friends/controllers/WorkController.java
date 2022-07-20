@@ -39,13 +39,15 @@ public class WorkController {
 	@Autowired
 	private AuthTokenService authTokenService;
 	
-	@PutMapping("update")
+	@PutMapping("update/{id}")
 	public ResponseEntity<Response> updateWork(@RequestHeader(required = true) String Authorization,
-												@Valid @RequestBody WorkDto workDto) {
+												@Valid @RequestBody WorkDto workDto,
+												@PathVariable(required = true) Integer id) {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		Work work = mapper.map(workDto, Work.class);
-		Work updatedWork = workService.updateWork(work, workDto.getId());
+		work.setId(id);
+		Work updatedWork = workService.updateWork(work, id);
 		Response response = new Response("Work Updated Successfully", true,1,updatedWork);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

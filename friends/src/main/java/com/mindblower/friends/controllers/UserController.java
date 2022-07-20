@@ -2,8 +2,10 @@ package com.mindblower.friends.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.aspectj.weaver.tools.Trace;
@@ -75,6 +77,7 @@ public class UserController {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		User userfromDto = mapper.map(userDto, User.class);
+		userfromDto.setId(user.getId());
 		User updatedUser = userService.updateUser(userfromDto,user.getId());
 		UserDto savedUserDto = mapper.map(updatedUser, UserDto.class);
 		Response response = new Response("User Updated Successfully", true,1,savedUserDto);
@@ -117,6 +120,7 @@ public class UserController {
 		
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
+		System.out.println(user.getPassword());
 		Response response = null;
 		if(curr_password.equals(new_password)) {
 			 response = new Response("New Password can not be same as old Password", false);
@@ -133,6 +137,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/logout")
+	@Transactional
 	public ResponseEntity<Response> logoutUser(@RequestHeader(required = true) String Authorization){
 		
 		
@@ -143,5 +148,18 @@ public class UserController {
 		userService.logoutUser(user);
 		
 		return new ResponseEntity<Response>(new Response("User Logout successfully", true), HttpStatus.OK);
+	}
+	
+	@GetMapping("/login")
+	public ResponseEntity<Response> loginUser(@RequestParam(required = true) String username,
+											@RequestParam(required = true) String password){
+		
+		Response response = userService.login(username, password);
+		
+		if(response.getAuthorization().isEmpty())
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+		
 	}
 }

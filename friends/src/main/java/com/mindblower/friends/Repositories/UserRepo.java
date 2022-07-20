@@ -6,5 +6,5 @@ import com.mindblower.friends.entities.User;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
 
-	
+	User findByEmail(String email);
 }

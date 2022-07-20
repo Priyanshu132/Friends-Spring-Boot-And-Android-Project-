@@ -66,13 +66,15 @@ public class PostController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
-	@PutMapping("update")
+	@PutMapping("update/{id}")
 	public ResponseEntity<Response> updatePost(@RequestHeader(required = true) String Authorization,
-												@Valid @RequestBody PostDto postDto){
+												@Valid @RequestBody PostDto postDto,
+												@PathVariable(required = true) Integer id){
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		Post post = mapper.map(postDto, Post.class);
-		Post updatedPost = postService.updatePost(post,postDto.getPostId());
+		post.setPostId(id);
+		Post updatedPost = postService.updatePost(post,id);
 		
 		Response response = new Response("Post Updated Successfully", true,1,updatedPost);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);

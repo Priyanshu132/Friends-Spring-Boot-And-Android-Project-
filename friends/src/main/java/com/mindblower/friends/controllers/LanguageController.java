@@ -39,13 +39,15 @@ public class LanguageController {
 	@Autowired
 	private AuthTokenService authTokenService;
 	
-	@PutMapping("update")
+	@PutMapping("update/{id}")
 	public ResponseEntity<Response> updateLanguage(@RequestHeader(required = true) String Authorization,
-													@Valid @RequestBody LanguageDto languageDto) {
+													@Valid @RequestBody LanguageDto languageDto,
+													@PathVariable(required = true) Integer id) {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		Language language = mapper.map(languageDto, Language.class);
-		Language updatedLanguage = languageService.updateLanguage(language, languageDto.getId());
+		language.setId(id);
+		Language updatedLanguage = languageService.updateLanguage(language, id);
 		Response response = new Response("Language Updated Successfully", true,1,updatedLanguage);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 		String message = exception.getMessage();
 		
 		Response response= new Response(message, false);
-		return new ResponseEntity<Response>(response,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
 			errorRes.put(fieldName, message);
 		});
 		
-		return new ResponseEntity<Map<String,String>>(errorRes,HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Map<String,String>>(errorRes,HttpStatus.OK);
 	}
 	
 	@ExceptionHandler(UserTokenNotFoundException.class)
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
 		String message = exception.getMessage();
 		
 		Response response= new Response(message, false);
-		return new ResponseEntity<Response>(response,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
 	@ExceptionHandler(MissingRequestHeaderException.class)
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
 		String message = exception.getMessage();
 		
 		Response response= new Response(message, false);
-		return new ResponseEntity<Response>(response,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
 	@ExceptionHandler(MissingServletRequestParameterException.class)
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
 		String message = exception.getMessage();
 		
 		Response response= new Response(message, false);
-		return new ResponseEntity<Response>(response,HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
 }

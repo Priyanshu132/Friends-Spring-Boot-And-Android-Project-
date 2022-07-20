@@ -37,7 +37,8 @@ public class FriendServiceImpl implements FriendService {
 		else {
 			 userFriend = new Friend();
 			 userFriend.setUserId(user.getId());
-			List<User> list = List.of(friend);
+			List<User> list = new ArrayList<>();
+			list.add(friend);
 			userFriend.setUserSendFriendRequest(list);
 			
 			
@@ -53,7 +54,8 @@ public class FriendServiceImpl implements FriendService {
 		else {
 			 friendUser = new Friend();
 			friendUser.setUserId(friend.getId());
-			List<User> list = List.of(user);
+			List<User> list = new ArrayList<>();
+			list.add(user);
 			friendUser.setUserGetFriendRequest(list);
 			
 			
@@ -82,7 +84,8 @@ public class FriendServiceImpl implements FriendService {
 		else {
 			userFriend = new Friend();
 			userFriend.setUserId(friend.getId());
-			List<User> list = List.of(user);
+			List<User> list = new ArrayList<>();
+			list.add(user);
 			userFriend.setFollowers(list);
 		}
 		friendRepo.save(userFriend);

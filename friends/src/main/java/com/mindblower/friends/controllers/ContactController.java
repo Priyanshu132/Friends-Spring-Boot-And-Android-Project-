@@ -36,13 +36,15 @@ public class ContactController {
 	@Autowired
 	private AuthTokenService authTokenService;
 	
-	@PutMapping("update")
+	@PutMapping("update/{id}")
 	public ResponseEntity<Response> updateContact(@RequestHeader(required = true) String Authorization,
-												@Valid @RequestBody ContactDto contactDto) {
+												@Valid @RequestBody ContactDto contactDto,
+												@PathVariable(required = true) Integer id) {
 	
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		Contact contact = mapper.map(contactDto, Contact.class);
-		Contact updatedContact = contactService.updateContact(contact, contactDto.getId());
+		contact.setId(id);
+		Contact updatedContact = contactService.updateContact(contact,id);
 		Response response = new Response("Contact Updated Successfully", true,1,updatedContact);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

@@ -38,13 +38,15 @@ public class AddressController {
 	@Autowired
 	private AuthTokenService authTokenService;
 
-	@PutMapping("update")
+	@PutMapping("update/{id}")
 	public ResponseEntity<Response> updateAddress(@RequestHeader(required = true) String Authorization,
-													@Valid @RequestBody AddressDto addressDto) {
+													@Valid @RequestBody AddressDto addressDto,
+													@PathVariable(required = true) Integer id) {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		Address address = mapper.map(addressDto, Address.class);
-		Address updatedAddress = addressService.updateAddress(address, addressDto.getId());
+		address.setId(id);
+		Address updatedAddress = addressService.updateAddress(address,id);
 		Response response = new Response("Address Updated Successfully", true,1,updatedAddress);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 		

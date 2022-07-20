@@ -36,13 +36,15 @@ public class EducationController {
 	@Autowired
 	private AuthTokenService authTokenService;
 	
-	@PutMapping("update")
+	@PutMapping("update/{id}")
 	public ResponseEntity<Response> updateEducation(@RequestHeader(required = true) String Authorization,
-													@Valid @RequestBody EducationDto educationDto) {
+													@Valid @RequestBody EducationDto educationDto,
+													@PathVariable(required = true) Integer id) {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		Education education = mapper.map(educationDto, Education.class);
-		Education updatedEducation = educationService.updateEducation(education, educationDto.getId());
+		education.setId(id);
+		Education updatedEducation = educationService.updateEducation(education,id);
 		Response response = new Response("Education Updated Successfully", true,1,updatedEducation);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

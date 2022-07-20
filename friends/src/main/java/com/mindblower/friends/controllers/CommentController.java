@@ -37,13 +37,15 @@ public class CommentController {
 	@Autowired
 	private AuthTokenService authTokenService;
 	
-	@PutMapping("update")
+	@PutMapping("update/{id}")
 	public ResponseEntity<Response> updateComment(@RequestHeader(required = true) String Authorization,
-													@Valid @RequestBody CommentDto commentDto) {
+													@Valid @RequestBody CommentDto commentDto,
+													@PathVariable(required = true) Integer id) {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		Comment comment = mapper.map(commentDto, Comment.class);
-		Comment updatedComment = commentService.updateComment(comment, commentDto.getCommentId());
+		comment.setCommentId(id);
+		Comment updatedComment = commentService.updateComment(comment, id);
 		Response response = new Response("Commented Successfully", true,1,updatedComment);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

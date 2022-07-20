@@ -46,7 +46,7 @@ public class User {
     inverseJoinColumns = {@JoinColumn(name ="language",referencedColumnName = "id")})
 	private List<Language> language_known;
 	
-	@Column(nullable = false,length = 100,unique = true)
+	@Column(nullable = false,length = 100)
 	private String email;
 	
 	@Column(nullable = false,length = 100)
@@ -58,7 +58,7 @@ public class User {
 	private String profile_image;
 	private String cover_image;
 	
-	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_address",
     joinColumns = {@JoinColumn(name ="user",referencedColumnName = "id")},
     inverseJoinColumns = {@JoinColumn(name ="address",referencedColumnName = "id")})
@@ -67,7 +67,7 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Contact> contact;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_work_place",
     joinColumns = {@JoinColumn(name ="user",referencedColumnName = "id")},
     inverseJoinColumns = {@JoinColumn(name ="work_place",referencedColumnName = "id")})
