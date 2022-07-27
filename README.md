@@ -1,5 +1,7 @@
 # Friends-Spring-Boot-Project-
-It is Full Stack Project which handles the both backend part which is developed in Spring Boot and Frontend part is developed in Android using Java.
+It is a Spring Boot Project which only handles backend part.
+
+Link of Frontend Part : https://github.com/Priyanshu132/Friends-Android-Project/tree/master
 
 Technologies Used :
 Backend : Spring Boot, Hibernate;
