@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mindblower.friends.Dto.UpdateUserDto;
 import com.mindblower.friends.Dto.UserDto;
 import com.mindblower.friends.Repositories.AuthTokenRepo;
 import com.mindblower.friends.entities.AuthToken;
@@ -73,13 +74,16 @@ public class UserController {
 	
 	@PutMapping("/update")
 	public ResponseEntity<Response> updateUser(@RequestHeader(required = true) String Authorization,
-												@Valid @RequestBody UserDto userDto){
+												@Valid @RequestBody UpdateUserDto updateUserDto){
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
-		User userfromDto = mapper.map(userDto, User.class);
+		User userfromDto = mapper.map(updateUserDto, User.class);
 		userfromDto.setId(user.getId());
-		User updatedUser = userService.updateUser(userfromDto,user.getId());
-		UserDto savedUserDto = mapper.map(updatedUser, UserDto.class);
+		userfromDto.setEmail(user.getEmail());
+		userfromDto.setPassword(user.getPassword());
+		userfromDto.setGender(user.getGender());
+		User updatedUser = userService.updateUser(userfromDto);
+		UpdateUserDto savedUserDto = mapper.map(updatedUser, UpdateUserDto.class);
 		Response response = new Response("User Updated Successfully", true,1,savedUserDto);
 		
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -89,7 +93,10 @@ public class UserController {
 	public ResponseEntity<Response> getUserById(@PathVariable Integer userId){
 		
 		User updatedUser = userService.getUserbyId(userId);
+		System.out.println(updatedUser.getDob());
 		Response response = new Response("User Fetched Successfully", true,1,updatedUser);
+		User user = (User)response.getObject();
+		System.out.println(user.getDob());
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
@@ -143,7 +150,7 @@ public class UserController {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		user.setOnline(false);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		userService.logoutUser(user);
 		

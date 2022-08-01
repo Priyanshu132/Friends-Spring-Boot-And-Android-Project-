@@ -26,7 +26,7 @@ public class EductaionServiceImpl implements EducationService {
 		Education updatedEducation = educationRepo.save(education);
 		
 		user.getEducation().add(updatedEducation);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		return updatedEducation;
 	}

@@ -46,7 +46,7 @@ public class FriendServiceImpl implements FriendService {
 		friendRepo.save(userFriend);
 		
 		user.setNoOfSendRequest(user.getNoOfSendRequest()+1);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		Friend friendUser = friendRepo.findByUserId(friend.getId());
 		if(Objects.nonNull(friendUser))
@@ -63,7 +63,7 @@ public class FriendServiceImpl implements FriendService {
 		friendRepo.save(friendUser);
 		
 		friend.setNoOfGetRequest(friend.getNoOfGetRequest()+1);
-		userService.updateUser(friend, friend.getId());
+		userService.updateUser(friend);
 		
 		response.put("status",AppConstants.STATUS_REQUEST);
 		
@@ -91,10 +91,10 @@ public class FriendServiceImpl implements FriendService {
 		friendRepo.save(userFriend);
 		
 		user.setNoOfFollowing(user.getNoOfFollowing()+1);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		friend.setNoOfFollewers(friend.getNoOfFollewers()+1);
-		userService.updateUser(friend,friend.getId());
+		userService.updateUser(friend);
 		
 		
 		
@@ -125,10 +125,10 @@ public class FriendServiceImpl implements FriendService {
 		}
 		
 		user.setNoOfFriends(user.getNoOfFriends()-1);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		friend.setNoOfFriends(friend.getNoOfFriends()-1);
-		userService.updateUser(friend, friend.getId());
+		userService.updateUser(friend);
 		
 		response.put("status", AppConstants.STATUS_ADD_FRIEND);
 		return response;
@@ -147,10 +147,10 @@ public class FriendServiceImpl implements FriendService {
 			friendRepo.save(userFriend);
 			
 			user.setNoOfFollowing(user.getNoOfFollowing()-1);
-			userService.updateUser(user, user.getId());
+			userService.updateUser(user);
 			
 			friend.setNoOfFollewers(friend.getNoOfFollewers()-1);
-			userService.updateUser(friend, friend.getId());
+			userService.updateUser(friend);
 		}
 		
 		
@@ -181,11 +181,11 @@ public class FriendServiceImpl implements FriendService {
 		
 		user.setNoOfFriends(user.getNoOfFriends()+1);
 		user.setNoOfGetRequest(user.getNoOfGetRequest()-1);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		friend.setNoOfFriends(friend.getNoOfFriends()+1);
 		friend.setNoOfSendRequest(friend.getNoOfSendRequest()-1);
-		userService.updateUser(friend, friend.getId());
+		userService.updateUser(friend);
 		
 		response.put("status", AppConstants.STATUS_FRIEND);
 		return response;	

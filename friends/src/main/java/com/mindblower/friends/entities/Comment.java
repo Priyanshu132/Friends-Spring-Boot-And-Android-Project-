@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -22,11 +24,18 @@ public class Comment {
 	@Column(name = "discription",length = 100)
 	private String CommentDiscription;
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "created_date",nullable = false)
 	private Date commentDate;
 	
 	@Column(name = "likes")
 	private int CommentLikes;
+	
+	@Column(name = "User",nullable = false)
+	private Integer userId;
+	
+	@Column(name = "User_Name",nullable = false)
+	private String userName;
 
 	
 	public Integer getCommentId() {
@@ -59,6 +68,22 @@ public class Comment {
 
 	public void setCommentLikes(int commentLikes) {
 		CommentLikes = commentLikes;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 	

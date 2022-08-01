@@ -1,7 +1,12 @@
 package com.mindblower.friends.Dto;
 
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CommentDto {
 
@@ -12,9 +17,15 @@ public class CommentDto {
 	
 	private String CommentDiscription;
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@NotNull(message = "Provide Date and Time of comment !!")
 	private Date commentDate;
 	
+	@NotNull(message = "User Can not be Null !!")
+	private Integer userId;
+	
+	@NotBlank(message = "User Name Can not be Blank !!")
+	private String userName;
 	
 	private int CommentLikes;
 
@@ -66,6 +77,26 @@ public class CommentDto {
 
 	public void setCommentLikes(int commentLikes) {
 		CommentLikes = commentLikes;
+	}
+
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+
+	public String getUserName() {
+		return userName;
+	}
+
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 	

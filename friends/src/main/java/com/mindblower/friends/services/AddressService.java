@@ -16,5 +16,4 @@ public interface AddressService {
 	
 	Address addAddress(Address address,User user);
 	
-	
 }

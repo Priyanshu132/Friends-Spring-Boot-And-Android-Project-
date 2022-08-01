@@ -26,7 +26,7 @@ public class LanguageServiceImpl implements LanguageService {
 		Language updatedLanguage = languageRepo.save(language);
 		
 		user.getLanguage_known().add(updatedLanguage);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		return updatedLanguage;
 	}

@@ -35,11 +35,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User updateUser(User user,Integer userId) {
+	public User updateUser(User user) {
 
 		User savedUser = userRepo.save(user);
-		
-		
 		return savedUser;
 		
 	}
@@ -50,7 +48,6 @@ public class UserServiceImpl implements UserService {
 		try {
 			userRepo.deleteById(userId);
 		} catch (Exception e) {
-			System.out.println(e.getMessage() +" " +e.getLocalizedMessage());
 			throw new ResourceNotFoundException("User", " id ", userId);
 		}
 		

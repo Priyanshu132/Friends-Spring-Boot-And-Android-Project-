@@ -1,5 +1,7 @@
 package com.mindblower.friends.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mindblower.friends.Repositories.AddressRepo;
@@ -45,9 +47,10 @@ public class AddressServiceImpl implements AddressService {
 		
 		Address updatedAddress =  addressRepo.save(address);
 		user.getAddress().add(updatedAddress);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		return updatedAddress;
 	}
+
 
 }

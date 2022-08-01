@@ -27,7 +27,7 @@ public class WorkServiceImpl implements WorkService{
 		Work updatedWork = workRepo.save(work);
 		
 		user.getWork_place().add(updatedWork);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		return updatedWork;
 	}

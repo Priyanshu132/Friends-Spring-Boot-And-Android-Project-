@@ -46,7 +46,7 @@ public class PostController {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		user.setOnline(true);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		List<Post> posts = postService.getAllPost();
 		

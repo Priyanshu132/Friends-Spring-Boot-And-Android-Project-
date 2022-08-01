@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -68,10 +69,23 @@ public class AddressController {
 	public ResponseEntity<Response> deleteAddress(@RequestHeader(required = true) String Authorization,
 													@PathVariable Integer id) throws Exception{
 		User user = authTokenService.getCustomerFromToken(Authorization);
-		throw new Exception("Under Construction");
-//		addressService.deleteAddress(id);
-//		return new ResponseEntity<Response>(new Response("Address deleted successfully", true), HttpStatus.OK);
+		
+		addressService.deleteAddress(id);
+		return new ResponseEntity<Response>(new Response("Address deleted successfully", true), HttpStatus.OK);
 
 		
 	}
+	
+	@GetMapping("/")
+	public ResponseEntity<Response> getAllAddress(@RequestHeader(required = true) String Authorization){
+		
+		User user = authTokenService.getCustomerFromToken(Authorization);
+		
+		Response response = new Response("Address Fetched successfully",true,user.getAddress().size(),user.getAddress());
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+
+		
+	}
+	
+	
 }

@@ -1,6 +1,7 @@
 package com.mindblower.friends.entities;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.util.*;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,11 +18,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,6 +40,7 @@ public class User {
 	@Column(nullable = false)
 	private String gender;
 	
+	@JsonFormat(pattern="yyyy-MM-dd")
 	@Column(name = "date_of_birth",nullable = false)
 	private Date dob;
 	
@@ -58,7 +62,7 @@ public class User {
 	private String profile_image;
 	private String cover_image;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinTable(name = "user_address",
     joinColumns = {@JoinColumn(name ="user",referencedColumnName = "id")},
     inverseJoinColumns = {@JoinColumn(name ="address",referencedColumnName = "id")})
@@ -80,7 +84,7 @@ public class User {
 	
 	private String interested;
 	
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "userId")
 	private List<Post> post;
 	
 	private boolean isOnline;

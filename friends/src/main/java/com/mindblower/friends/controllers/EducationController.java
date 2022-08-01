@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -72,5 +73,16 @@ public class EducationController {
 		}
 		Response response = new Response("Education Deleted Successfully", true);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@GetMapping("/")
+	public ResponseEntity<Response> getAllEducation(@RequestHeader(required = true) String Authorization){
+		
+		User user = authTokenService.getCustomerFromToken(Authorization);
+		
+		Response response = new Response("Education Fetched successfully",true,user.getEducation().size(),user.getEducation());
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+
+		
 	}
 }

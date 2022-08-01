@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -23,6 +26,7 @@ public class Post {
 	@Column(name = "about",length = 100)
 	private String PostAbout;
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "created_date",nullable = false)
 	private Date postDate;
 	
@@ -32,12 +36,17 @@ public class Post {
 	@Column(name = "likes")
 	private Integer postLikesInteger;
 	
-	@ManyToOne
-	private User user;
+	@Column(name = "User",nullable = false)
+	private Integer userId;
+	
+	@Column(name = "User_Name",nullable = false)
+	private String userName;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Comment> comment;
 
+	@Column(name = "Post_Type")
+	private int postType;
 	
 
 	public Integer getPostId() {
@@ -72,12 +81,22 @@ public class Post {
 		this.visibility = visibility;
 	}
 
-	public User getUser() {
-		return user;
+	
+
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public List<Comment> getComment() {
@@ -94,6 +113,14 @@ public class Post {
 
 	public void setPostLikesInteger(Integer postLikesInteger) {
 		this.postLikesInteger = postLikesInteger;
+	}
+
+	public int getPostType() {
+		return postType;
+	}
+
+	public void setPostType(int postType) {
+		this.postType = postType;
 	}
 	
 	

@@ -26,7 +26,7 @@ public class ContactServiceImpl implements ContactService {
 		Contact updatedContact = contactRepo.save(contact);
 		
 		user.getContact().add(updatedContact);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		
 		return updatedContact;
 	}

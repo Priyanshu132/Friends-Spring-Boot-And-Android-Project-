@@ -27,7 +27,7 @@ public class PostServiceImpl implements PostService {
 		
 		Post updatedPost = postRepo.save(post);
 		user.getPost().add(updatedPost);
-		userService.updateUser(user, user.getId());
+		userService.updateUser(user);
 		return updatedPost;
 	}
 
