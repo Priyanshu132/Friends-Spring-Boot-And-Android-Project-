@@ -81,6 +81,28 @@ public class FriendController {
 		return response;
 	}
 	
+	@PostMapping("/friend/request/cancel")
+	public HashMap<String, String> cancelRequestedFriend(@RequestHeader(required = true) String Authorization,
+												@RequestParam(required = true) Integer friendId){
+		
+		User user = authTokenService.getCustomerFromToken(Authorization);
+		User friendUser = userService.getUserbyId(friendId);
+		HashMap<String, String> response = friendService.cancelRequestedFriend(user, friendUser);
+		
+		return response;
+	}
+	
+	@PostMapping("/friend/request/delete")
+	public HashMap<String, String> deleteSentRequest(@RequestHeader(required = true) String Authorization,
+												@RequestParam(required = true) Integer friendId){
+		
+		User user = authTokenService.getCustomerFromToken(Authorization);
+		User friendUser = userService.getUserbyId(friendId);
+		HashMap<String, String> response = friendService.deleteSentRequest(user, friendUser);
+		
+		return response;
+	}
+	
 	@PostMapping("/friend/request/add")
 	public HashMap<String, String> addRequestedFriend(@RequestHeader(required = true) String Authorization,
 												@RequestParam(required = true) Integer friendId){
@@ -90,6 +112,26 @@ public class FriendController {
 		HashMap<String, String> response = friendService.addRequestedFriend(user, friendUser);
 		
 		return response;
+	}
+	
+	@GetMapping("/friend/request/send")
+	public ResponseEntity<Response> getAllSendRequests(@RequestHeader(required = true) String Authorization){
+		
+		User user = authTokenService.getCustomerFromToken(Authorization);
+	
+		List<User> list  = friendService.getAllSendRequests(user);
+		Response response = new Response("Requests Fetched Successfully", true,list.size(),list);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@GetMapping("/friend/request/get")
+	public ResponseEntity<Response> getAllGetRequests(@RequestHeader(required = true) String Authorization){
+		
+		User user = authTokenService.getCustomerFromToken(Authorization);
+	
+		List<User> list  = friendService.getAllGetRequests(user);
+		Response response = new Response("Requests Fetched Successfully", true,list.size(),list);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
 	@GetMapping("/friends")

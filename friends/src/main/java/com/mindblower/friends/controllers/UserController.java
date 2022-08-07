@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mindblower.friends.Dto.UpdateUserDto;
 import com.mindblower.friends.Dto.UserDto;
+import com.mindblower.friends.Dto.UserIds;
 import com.mindblower.friends.Repositories.AuthTokenRepo;
 import com.mindblower.friends.entities.AuthToken;
 import com.mindblower.friends.entities.User;
@@ -100,12 +101,24 @@ public class UserController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	@GetMapping("/")
-	public ResponseEntity<Response> getAllUsers(){
+	@GetMapping("findFriend")
+	public ResponseEntity<Response> findFriends(@RequestHeader(required = true) String Authorization){
 		
-		List<User> users = userService.getAllUsers();
+		User user1 = authTokenService.getCustomerFromToken(Authorization);
+		List<User> users = userService.findFriends(user1);
 		List<UserDto> userDtos= users.stream().map(user -> mapper.map(user, UserDto.class)).collect(Collectors.toList());
 		Response response = new Response("User Fetched Successfully", true,users.size(),userDtos);
+		
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@GetMapping("/ids")
+	public ResponseEntity<Response> getAllUsersByIds(@RequestHeader(required = true) String Authorization,
+														@Valid @RequestBody UserIds userIds){
+		List<Integer> ids = userIds.getId().stream().map(x-> x).collect(Collectors.toList());
+		List<User> users = userService.getAllUsersById(ids);
+		List<UserDto> userDtos= users.stream().map(user -> mapper.map(user, UserDto.class)).collect(Collectors.toList());
+		Response response = new Response("Users Fetched Successfully", true,users.size(),userDtos);
 		
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -169,4 +182,6 @@ public class UserController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 		
 	}
+	
+	
 }

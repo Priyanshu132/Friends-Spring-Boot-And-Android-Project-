@@ -1,6 +1,9 @@
 package com.mindblower.friends.services;
 
+import java.util.List;
+
 import com.mindblower.friends.entities.Comment;
+import com.mindblower.friends.entities.User;
 
 public interface CommentService {
 
@@ -10,9 +13,9 @@ public interface CommentService {
 	
 	Comment updateComment(Comment comment,Integer commentId);
 	
-	int increaseCommentLikes(Integer commentId);
+	int increaseCommentLikes(Integer commentId,User user);
 	
-	int decreaseCommentLikes(Integer commentId);
+	int decreaseCommentLikes(Integer commentId,User user);
 	
-	int getCommentLikes(Integer commentId);
+	List<Integer> getCommentLikes(Integer commentId);
 }

@@ -6,6 +6,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -42,12 +45,20 @@ public class Post {
 	@Column(name = "User_Name",nullable = false)
 	private String userName;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Comment> comment;
 
 	@Column(name = "Post_Type")
-	private int postType;
+	private int postType;	
 	
+	@OneToMany(mappedBy = "post",fetch = FetchType.LAZY)
+	private List<PostLikes> postLikes;
+	
+	@Transient
+	private boolean isLiked;
+	
+	@Column(name = "IMAGE_NAME")
+	private String image;
 
 	public Integer getPostId() {
 		return postId;
@@ -122,6 +133,33 @@ public class Post {
 	public void setPostType(int postType) {
 		this.postType = postType;
 	}
+
+	public List<PostLikes> getPostLikes() {
+		return postLikes;
+	}
+
+	public void setPostLikes(List<PostLikes> postLikes) {
+		this.postLikes = postLikes;
+	}
+
+	public boolean isLiked() {
+		return isLiked;
+	}
+
+	public void setLiked(boolean isLiked) {
+		this.isLiked = isLiked;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+
+
 	
 	
 }

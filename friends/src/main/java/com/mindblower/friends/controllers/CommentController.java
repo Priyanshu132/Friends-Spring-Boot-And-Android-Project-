@@ -1,7 +1,10 @@
 package com.mindblower.friends.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import org.aspectj.apache.bcel.classfile.Module.Uses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,7 +83,7 @@ public class CommentController {
 														@PathVariable Integer commentId) {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
-		Integer likesInteger = commentService.increaseCommentLikes(commentId);
+		Integer likesInteger = commentService.increaseCommentLikes(commentId,user);
 		Response response = new Response("Comment Added Successfully", true,1,likesInteger);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -90,7 +93,7 @@ public class CommentController {
 															@PathVariable Integer commentId) {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
-		Integer likesInteger = commentService.decreaseCommentLikes(commentId);
+		Integer likesInteger = commentService.decreaseCommentLikes(commentId,user);
 		Response response = new Response("Comment Added Successfully", true,1,likesInteger);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -100,8 +103,8 @@ public class CommentController {
 													@PathVariable Integer commentId) {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
-		Integer likesInteger = commentService.getCommentLikes(commentId);
-		Response response = new Response("Comment Added Successfully", true,1,likesInteger);
+		List<Integer> users = commentService.getCommentLikes(commentId);
+		Response response = new Response("Comment Likes Fetched Successfully", true,users.size(),users);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	

@@ -1,11 +1,19 @@
 package com.mindblower.friends.services.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.criteria.CriteriaBuilder.In;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mindblower.friends.Repositories.CommentLikesRepo;
 import com.mindblower.friends.Repositories.CommentRepo;
 import com.mindblower.friends.entities.Comment;
+import com.mindblower.friends.entities.CommentLikes;
 import com.mindblower.friends.entities.Post;
+import com.mindblower.friends.entities.User;
 import com.mindblower.friends.exception.ResourceNotFoundException;
 import com.mindblower.friends.services.CommentService;
 import com.mindblower.friends.services.PostService;
@@ -15,6 +23,9 @@ public class CommentServiceImpl implements CommentService {
 
 	@Autowired
 	PostService postService;
+	
+	@Autowired
+	CommentLikesRepo commentLikesRepo;
 	
 	@Autowired
 	CommentRepo commentRepo;
@@ -52,36 +63,40 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public int increaseCommentLikes(Integer commentId) {
+	public int increaseCommentLikes(Integer commentId,User user) {
 		
 		Comment comment = commentRepo.findById(commentId).orElseThrow(()->new ResourceNotFoundException("Comment", "Id", commentId));
 		
 		int likes = comment.getCommentLikes()+1;
 		comment.setCommentLikes(likes);
-		
 		commentRepo.save(comment);
+		
+		CommentLikes commentLikes = new CommentLikes();
+		commentLikes.setComment(commentId);
+		commentLikes.setUser(user.getId());
+		commentLikesRepo.save(commentLikes);
+		
 		return likes;
 	}
 	
 	@Override
-	public int decreaseCommentLikes(Integer commentId) {
+	public int decreaseCommentLikes(Integer commentId,User user) {
 		
 		Comment comment = commentRepo.findById(commentId).orElseThrow(()->new ResourceNotFoundException("Comment", "Id", commentId));
 		
 		int likes = comment.getCommentLikes()-1;
 		comment.setCommentLikes(likes);
-		
 		commentRepo.save(comment);
 		return likes;
 	}
 
 	@Override
-	public int getCommentLikes(Integer commentId) {
+	public List<Integer> getCommentLikes(Integer commentIds) {
 		
-		Comment comment = commentRepo.findById(commentId).orElseThrow(()->new ResourceNotFoundException("Comment", "Id", commentId));
+		List<CommentLikes> commentLikes = commentLikesRepo.findByComment(commentIds);
+		List<Integer> users = commentLikes.stream().map(x->x.getUser()).collect(Collectors.toList());
 		
-		int likes = comment.getCommentLikes();
 	
-		return likes;
+		return users;
 	}
 }

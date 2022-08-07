@@ -1,5 +1,6 @@
 package com.mindblower.friends.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,11 +16,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.yaml.snakeyaml.Yaml;
+
 import com.mindblower.friends.reponse.Response;
 import com.mindblower.friends.security.Auth;
 import com.mindblower.friends.services.AuthTokenService;
 import com.mindblower.friends.services.PostService;
+import com.mindblower.friends.services.StorageStrategy;
 import com.mindblower.friends.services.UserService;
 import com.mindblower.friends.Dto.PostDto;
 import com.mindblower.friends.entities.Post;
@@ -39,6 +45,9 @@ public class PostController {
 	private UserService userService;
 	
 	@Autowired
+	StorageStrategy storageStrategy;
+	
+	@Autowired
 	private AuthTokenService authTokenService;
 	
 	@GetMapping("/")
@@ -47,21 +56,39 @@ public class PostController {
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		user.setOnline(true);
 		userService.updateUser(user);
-		
 		List<Post> posts = postService.getAllPost();
-		
-		Response response = new Response("Post Created Successfully", true,1,posts);
+		posts.stream().forEach(post->{
+			
+			post.getPostLikes().stream().forEach(postlike-> {
+				
+				if(postlike.getUser() == user.getId()) {
+					post.setLiked(true);
+				}
+			});
+			
+			post.getComment().stream().forEach(comment->{
+				
+				comment.getCommentLikes1().stream().forEach(commentlike->{
+					
+					if(commentlike.getUser() == user.getId())
+						comment.setLiked(true);
+				});
+			});
+		});
+		Response response = new Response("All Post Fetched Successfully", true,posts.size(),posts);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
 	@PostMapping("save")
 	public ResponseEntity<Response> createPost(@RequestHeader(required = true) String Authorization,
-												@Valid @RequestBody PostDto postDto){
+												@Valid @RequestBody PostDto postDto,
+												@RequestParam("file") MultipartFile file) throws IOException{
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
 		Post post = mapper.map(postDto, Post.class);
+		String fileNameString = storageStrategy.uploadFile(file);
+		post.setImage(fileNameString);
 		Post updatedPost = postService.createPost(post,user);
-		
 		Response response = new Response("Post Created Successfully", true,1,updatedPost);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -75,7 +102,6 @@ public class PostController {
 		Post post = mapper.map(postDto, Post.class);
 		post.setPostId(id);
 		Post updatedPost = postService.updatePost(post,id);
-		
 		Response response = new Response("Post Updated Successfully", true,1,updatedPost);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -92,32 +118,32 @@ public class PostController {
 	}
 	
 	@PostMapping("likes/increase/{postId}")
-	public ResponseEntity<Response> increaseCommentLikes(@RequestHeader(required = true) String Authorization,
+	public ResponseEntity<Response> increasePostLikes(@RequestHeader(required = true) String Authorization,
 															@PathVariable Integer postId) {
 		
 		User user = authTokenService.getCustomerFromToken(Authorization);
-		Integer likesInteger = postService.increasePostLikes(postId);
-		Response response = new Response("Comment Added Successfully", true,1,likesInteger);
+		Integer likesInteger = postService.increasePostLikes(postId,user);
+		Response response = new Response("Post Added Successfully", true,1,likesInteger);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
-	@PostMapping("likes/decrease/{commentId}")
-	public ResponseEntity<Response> decreaseCommentLikes(@RequestHeader(required = true) String Authorization,
+	@PostMapping("likes/decrease/{postId}")
+	public ResponseEntity<Response> decreasePostLikes(@RequestHeader(required = true) String Authorization,
 															@PathVariable Integer postId) {
 
 		User user = authTokenService.getCustomerFromToken(Authorization);
-		Integer likesInteger = postService.decreasePostLikes(postId);
-		Response response = new Response("Comment Added Successfully", true,1,likesInteger);
+		Integer likesInteger = postService.decreasePostLikes(postId,user);
+		Response response = new Response("Post Added Successfully", true,1,likesInteger);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
-	@PostMapping("likes/{commentId}")
-	public ResponseEntity<Response> getCommentLikes(@RequestHeader(required = true) String Authorization,
+	@PostMapping("likes/{postId}")
+	public ResponseEntity<Response> getPostLikes(@RequestHeader(required = true) String Authorization,
 													@PathVariable Integer postId) {
 	
 		User user = authTokenService.getCustomerFromToken(Authorization);
-		Integer likesInteger = postService.getPostLikes(postId);
-		Response response = new Response("Comment Added Successfully", true,1,likesInteger);
+		List<Integer> users = postService.getPostLikes(postId,user);
+		Response response = new Response("Post Added Successfully", true,users.size(),users);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 }

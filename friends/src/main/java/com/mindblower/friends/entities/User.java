@@ -19,9 +19,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "users")
 public class User{
@@ -71,7 +72,7 @@ public class User{
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Contact> contact;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_work_place",
     joinColumns = {@JoinColumn(name ="user",referencedColumnName = "id")},
     inverseJoinColumns = {@JoinColumn(name ="work_place",referencedColumnName = "id")})

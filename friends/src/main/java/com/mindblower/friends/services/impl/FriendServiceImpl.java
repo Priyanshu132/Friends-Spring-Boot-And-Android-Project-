@@ -190,6 +190,62 @@ public class FriendServiceImpl implements FriendService {
 		response.put("status", AppConstants.STATUS_FRIEND);
 		return response;	
 	}
+	
+	@Override
+	public HashMap<String, String> cancelRequestedFriend(User user, User friend) {
+		
+		HashMap<String, String> response = new HashMap<>();
+		
+		Friend userFriend = friendRepo.findByUserId(user.getId());
+		if(Objects.nonNull(userFriend)) {
+			userFriend.getUserGetFriendRequest().remove(friend);
+			friendRepo.save(userFriend);
+		}
+		
+		
+		Friend friendUser = friendRepo.findByUserId(friend.getId());
+		if(Objects.nonNull(friendUser)) {
+			friendUser.getUserSendFriendRequest().remove(user);
+			friendRepo.save(friendUser);
+		}
+		
+		user.setNoOfGetRequest(user.getNoOfGetRequest()-1);
+		userService.updateUser(user);
+		
+		friend.setNoOfSendRequest(friend.getNoOfSendRequest()-1);
+		userService.updateUser(friend);
+		
+		response.put("status", AppConstants.STATUS_CANCEL_REQUEST);
+		return response;	
+	}
+	
+	@Override
+	public HashMap<String, String> deleteSentRequest(User user, User friend) {
+		
+		HashMap<String, String> response = new HashMap<>();
+		
+		Friend userFriend = friendRepo.findByUserId(user.getId());
+		if(Objects.nonNull(userFriend)) {
+			userFriend.getUserSendFriendRequest().remove(friend);
+			friendRepo.save(userFriend);
+		}
+		
+		
+		Friend friendUser = friendRepo.findByUserId(friend.getId());
+		if(Objects.nonNull(friendUser)) {
+			friendUser.getUserGetFriendRequest().remove(user);
+			friendRepo.save(friendUser);
+		}
+
+		user.setNoOfSendRequest(user.getNoOfSendRequest()-1);
+		userService.updateUser(user);
+		
+		friend.setNoOfGetRequest(friend.getNoOfGetRequest()-1);
+		userService.updateUser(friend);
+		
+		response.put("status", AppConstants.STATUS_CANCEL_REQUEST);
+		return response;	
+	}
 
 
 	@Override
@@ -214,6 +270,39 @@ public class FriendServiceImpl implements FriendService {
 		if(Objects.nonNull(userFriend)) {
 			
 			list = userFriend.getFriendList().stream().filter(user1->user1.isOnline()).collect(Collectors.toList());
+			
+			return list != null ? list : new ArrayList<User>();
+		}
+		
+		return new ArrayList<User>();
+	}
+
+
+	@Override
+	public List<User> getAllGetRequests(User user) {
+		List<User> list = null;
+		
+		Friend userFriend = friendRepo.findByUserId(user.getId());
+		
+		if(Objects.nonNull(userFriend)) {
+			
+			list = userFriend.getUserGetFriendRequest();
+			
+			return list != null ? list : new ArrayList<User>();
+		}
+		
+		return new ArrayList<User>();
+	}
+	
+	@Override
+	public List<User> getAllSendRequests(User user) {
+		List<User> list = null;
+		
+		Friend userFriend = friendRepo.findByUserId(user.getId());
+		
+		if(Objects.nonNull(userFriend)) {
+			
+			list = userFriend.getUserSendFriendRequest();
 			
 			return list != null ? list : new ArrayList<User>();
 		}

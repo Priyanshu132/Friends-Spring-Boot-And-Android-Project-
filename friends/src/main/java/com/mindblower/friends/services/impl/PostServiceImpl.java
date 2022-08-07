@@ -1,13 +1,16 @@
 package com.mindblower.friends.services.impl;
 
-import java.util.List;
+import java.util.List;import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mindblower.friends.Repositories.PostLikeRepo;
 import com.mindblower.friends.Repositories.PostRepo;
 import com.mindblower.friends.Repositories.UserRepo;
 import com.mindblower.friends.entities.Post;
+import com.mindblower.friends.entities.PostLikes;
 import com.mindblower.friends.entities.User;
 import com.mindblower.friends.exception.ResourceNotFoundException;
 import com.mindblower.friends.services.PostService;
@@ -18,6 +21,9 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired
 	PostRepo postRepo;
+	
+	@Autowired
+	PostLikeRepo postLikeRepo;
 	
 	@Autowired
 	UserService userService;
@@ -65,32 +71,38 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public int increasePostLikes(Integer postId) {
+	public int increasePostLikes(Integer postId,User user) {
 		
 		Post post = postRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post","id",postId));
 		int likes = post.getPostLikesInteger()+1;
 		post.setPostLikesInteger(likes);
 		postRepo.save(post);
+		
+		PostLikes postLikes = new PostLikes();
+		postLikes.setPost(postId);
+		postLikes.setUser(user.getId());
+		postLikeRepo.save(postLikes);
+		
 		return likes;
 	}
 
 	@Override
-	public int decreasePostLikes(Integer postId) {
+	public int decreasePostLikes(Integer postId,User user) {
 		
 		Post post = postRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post","id",postId));
 		int likes = post.getPostLikesInteger()-1;
 		post.setPostLikesInteger(likes);
+		//post.getUser().remove(user);
 		postRepo.save(post);
 		return likes;
 	}
 
 	@Override
-	public int getPostLikes(Integer postId) {
+	public List<Integer> getPostLikes(Integer postId,User user) {
 		
-		Post post = postRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post","id",postId));
-		int likes = post.getPostLikesInteger();
-		
-		return likes;
+		List<PostLikes> postLikests = postLikeRepo.findByPost(postId);
+		List<Integer> users = postLikests.stream().map(postLike->postLike.getUser()).collect(Collectors.toList());
+		return users;
 	}
 
 }

@@ -16,7 +16,9 @@ public interface UserService {
 	
 	User getUserbyId(Integer userId);
 	
-	List<User> getAllUsers();
+	List<User> findFriends(User user);
+	
+	List<User> getAllUsersById(List<Integer> ids);
 	
 	void logoutUser(User user);
 	

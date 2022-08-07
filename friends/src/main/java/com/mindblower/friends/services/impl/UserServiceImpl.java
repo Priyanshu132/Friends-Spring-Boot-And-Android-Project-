@@ -1,8 +1,10 @@
 package com.mindblower.friends.services.impl;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Objects;import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import org.aspectj.apache.bcel.classfile.Module.Uses;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -63,11 +65,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> getAllUsers() {
+	public List<User> findFriends(User user) {
 		
 		List<User> users  = userRepo.findAll();
-	
-		return users;
+		List<User> findFriendList = users.stream().filter(x->x.getId() != user.getId()).collect(Collectors.toList());
+		return findFriendList;
 	}
 
 	@Override
@@ -108,6 +110,14 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return response;
+	}
+
+	@Override
+	public List<User> getAllUsersById(List<Integer> ids) throws UserTokenNotFoundException{
+		
+		List<User> user = userRepo.findAllById(ids);
+
+		return user;
 	}
 
 }

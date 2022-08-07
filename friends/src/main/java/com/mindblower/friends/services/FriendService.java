@@ -17,7 +17,15 @@ public interface FriendService {
 	
 	HashMap<String, String> addRequestedFriend(User user,User friend);
 	
+	HashMap<String, String> cancelRequestedFriend(User user,User friend);
+	
+	HashMap<String, String> deleteSentRequest(User user,User friend);
+	
 	List<User> getAllFriend(User user);
+	
+	List<User> getAllGetRequests(User user);
+	
+	List<User> getAllSendRequests(User user);
 	
 	List<User> getAllActiveFriends(User user);
 	

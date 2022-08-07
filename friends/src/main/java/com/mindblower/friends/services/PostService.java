@@ -17,9 +17,9 @@ public interface PostService {
 	
 	Post getPotsById(Integer postId);
 	
-	int increasePostLikes(Integer postId);
+	int increasePostLikes(Integer postId,User user);
 	
-	int decreasePostLikes(Integer postId);
+	int decreasePostLikes(Integer postId,User user);
 	
-	int getPostLikes(Integer postId);
+	List<Integer> getPostLikes(Integer postId,User user);
 }

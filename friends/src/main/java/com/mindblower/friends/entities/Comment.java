@@ -4,11 +4,14 @@ import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -37,6 +40,11 @@ public class Comment {
 	@Column(name = "User_Name",nullable = false)
 	private String userName;
 
+	@OneToMany(mappedBy = "comment",fetch = FetchType.LAZY)
+	private List<CommentLikes> commentLikes1;
+	
+	@Transient
+	private boolean isLiked;
 	
 	public Integer getCommentId() {
 		return commentId;
@@ -85,6 +93,24 @@ public class Comment {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
+	public boolean isLiked() {
+		return isLiked;
+	}
+
+	public void setLiked(boolean isLiked) {
+		this.isLiked = isLiked;
+	}
+
+	public List<CommentLikes> getCommentLikes1() {
+		return commentLikes1;
+	}
+
+	public void setCommentLikes1(List<CommentLikes> commentLikes1) {
+		this.commentLikes1 = commentLikes1;
+	}
+
+
 	
 	
 }
